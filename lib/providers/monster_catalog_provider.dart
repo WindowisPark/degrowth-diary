@@ -27,6 +27,12 @@ final monstersByRarityProvider = FutureProvider.family<List<Monster>, String>((r
   return catalogRepo.getByRarity(rarity);
 });
 
+/// 몬스터 카탈로그 (Map 형태 - id로 빠른 조회용)
+final monsterCatalogProvider = FutureProvider<Map<String, Monster>>((ref) async {
+  final monsters = await ref.watch(allMonstersProvider.future);
+  return {for (final m in monsters) m.id: m};
+});
+
 /// 해금 조건 체크
 final unlockCheckProvider = FutureProvider.family<Monster?, ({String categoryKey, int count})>((ref, params) async {
   final catalogRepo = ref.watch(monsterCatalogRepositoryProvider);

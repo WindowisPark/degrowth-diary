@@ -9,10 +9,17 @@ abstract class IUserRepository {
   Future<void> createUser(User user);
 
   /// 유저 설정 업데이트
-  Future<void> updateSettings(UserSettings settings);
+  Future<void> updateSettings(String userId, UserSettings settings);
 
   /// 닉네임 업데이트
-  Future<void> updateNickname(String nickname);
+  Future<void> updateNickname(String userId, String nickname);
+
+  /// 스트릭 업데이트
+  Future<void> updateStreak({
+    required String userId,
+    required int streakCount,
+    required String lastRecordDate,
+  });
 
   /// 유저 정보 스트림
   Stream<User?> watchUser(String userId);

@@ -7,9 +7,9 @@ class User extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String timezone;
-  final int streakCount;
-  final String? lastRecordDate;
-  final DateTime? lastRecordAt;
+  final int streakCount;          // 체크인 연속일
+  final String? lastRecordDate;   // 마지막 기록/체크인 날짜 (YYYY-MM-DD)
+  final DateTime? lastRecordAt;   // 마지막 기록/체크인 시각
   final UserSettings settings;
 
   const User({

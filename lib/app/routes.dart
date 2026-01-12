@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../presentation/screens/achievements/achievements_screen.dart';
 import '../presentation/screens/auth/auth_screen.dart';
 import '../presentation/screens/home/home_screen.dart';
+import '../presentation/screens/settings/settings_screen.dart';
 import '../presentation/screens/splash/splash_screen.dart';
 import '../providers/auth_provider.dart';
 
@@ -14,7 +16,8 @@ abstract class AppRoutes {
   static const home = '/';
   static const record = '/record';
   static const collection = '/collection';
-  static const mypage = '/mypage';
+  static const settings = '/settings';
+  static const achievements = '/achievements';
 }
 
 /// Auth 상태 변경 감지용 Listenable
@@ -71,6 +74,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.home,
         builder: (context, state) => const HomeScreen(),
       ),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.achievements,
+        builder: (context, state) => const AchievementsScreen(),
+      ),
       // TODO: 추가 라우트
       // GoRoute(
       //   path: AppRoutes.record,
@@ -79,10 +90,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       // GoRoute(
       //   path: AppRoutes.collection,
       //   builder: (context, state) => const CollectionScreen(),
-      // ),
-      // GoRoute(
-      //   path: AppRoutes.mypage,
-      //   builder: (context, state) => const MypageScreen(),
       // ),
     ],
     errorBuilder: (context, state) => Scaffold(

@@ -2,6 +2,64 @@
 
 나쁜 습관 기록하면 몬스터가 생기는 역설적 자기계발 앱
 
+## UI/UX 디자인 레퍼런스
+
+### 참고 사이트
+
+**UI/UX 패턴:**
+- **WWIT (What Was IT)**: https://wwit.design/ - 한국 앱 UI 패턴 모음
+- **UI Pocket**: https://www.ui-pocket.com/mobile/apps - 일본 앱 UI 갤러리
+- **Mobbin**: https://mobbin.com/ - 글로벌 앱 UI 패턴
+
+**Flutter 특화:**
+- **Flutter Awesome**: https://flutterawesome.com/ - Flutter 오픈소스 프로젝트/패키지
+- **It's All Widgets**: https://itsallwidgets.com/ - Flutter 앱 쇼케이스
+- **Flutter Gems**: https://fluttergems.dev/ - Flutter 패키지 카테고리별 정리
+
+**디자인 영감:**
+- **Dribbble Flutter**: https://dribbble.com/tags/flutter - Flutter UI 디자인
+- **Dribbble Monster App**: https://dribbble.com/search/monster-app - 몬스터/캐릭터 앱
+
+### 디자인 방향
+
+- **테마**: 다크 + 세계관 (던전/몬스터 서식지)
+- **핵심**: 몬스터가 주인공, 기록은 수단
+- **스타일**: 게이미피케이션 + 수집 요소
+
+### 컬러 시스템
+
+| 용도 | 현재 | 비고 |
+|------|------|------|
+| 배경 | 다크 그레이 | 던전 느낌 텍스처 고려 |
+| Primary | 네온 그린 | 몬스터 속성별 변주 가능 |
+| Accent | - | 카테고리별 포인트 컬러 |
+
+### 홈 화면 컨셉
+
+```
+┌─────────────────────────────┐
+│  [날짜]              [설정] │  ← 미니멀 헤더
+├─────────────────────────────┤
+│                             │
+│    ┌─────────────────┐      │
+│    │                 │      │
+│    │   몬스터 서식지  │      │  ← 메인 영역 (60%)
+│    │   (캐릭터 + 씬)  │      │
+│    │                 │      │
+│    └─────────────────┘      │
+│                             │
+├─────────────────────────────┤
+│  오늘의 기록 (3)    더보기 > │  ← 기록 요약
+│  ┌───┐ ┌───┐ ┌───┐         │
+│  │ 🍔 │ │ 📱 │ │ 🛋️ │         │  ← 카테고리 아이콘
+│  └───┘ └───┘ └───┘         │
+├─────────────────────────────┤
+│        [+ 기록하기]         │  ← 하단 CTA
+└─────────────────────────────┘
+```
+
+---
+
 ## Quick Reference
 
 ```bash

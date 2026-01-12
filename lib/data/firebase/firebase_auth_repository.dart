@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -11,9 +12,11 @@ import '../../domain/repositories/i_auth_repository.dart';
 class FirebaseAuthRepository implements IAuthRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final FirebaseFirestore _firestore;
 
   FirebaseAuthRepository(
-    this._firebaseAuth, {
+    this._firebaseAuth,
+    this._firestore, {
     GoogleSignIn? googleSignIn,
   }) : _googleSignIn = googleSignIn ?? GoogleSignIn();
 
@@ -118,11 +121,61 @@ class FirebaseAuthRepository implements IAuthRepository {
       if (user == null) {
         throw const AuthFailure('로그인이 필요합니다');
       }
+
+      // 1. Firestore 데이터 삭제
+      await _deleteUserData(user.uid);
+
+      // 2. Firebase Auth 계정 삭제
       await user.delete();
       await _googleSignIn.signOut();
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw AuthFailure(e.message ?? '회원탈퇴에 실패했습니다');
+    } on FirebaseException catch (e) {
+      throw ServerFailure(e.message ?? '데이터 삭제 중 오류가 발생했습니다');
+    } on SocketException {
+      throw const NetworkFailure();
     }
+  }
+
+  /// Firestore 유저 데이터 삭제
+  Future<void> _deleteUserData(String userId) async {
+    final batch = _firestore.batch();
+
+    // records 서브컬렉션 삭제
+    final records = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('records')
+        .get();
+    for (var doc in records.docs) {
+      batch.delete(doc.reference);
+    }
+
+    // userMonsters 서브컬렉션 삭제
+    final userMonsters = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('userMonsters')
+        .get();
+    for (var doc in userMonsters.docs) {
+      batch.delete(doc.reference);
+    }
+
+    // achievements 서브컬렉션 삭제
+    final achievements = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('achievements')
+        .get();
+    for (var doc in achievements.docs) {
+      batch.delete(doc.reference);
+    }
+
+    // users 문서 삭제
+    batch.delete(_firestore.collection('users').doc(userId));
+
+    // 일괄 실행
+    await batch.commit();
   }
 
   /// Firebase User를 도메인 User로 변환

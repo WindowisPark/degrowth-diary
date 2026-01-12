@@ -33,7 +33,22 @@ class AuthNotifier extends Notifier<AsyncValue<User?>> {
   Future<void> signInWithGoogle() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final user = await ref.read(authRepositoryProvider).signInWithGoogle();
+      final authRepo = ref.read(authRepositoryProvider);
+      final userRepo = ref.read(userRepositoryProvider);
+
+      // 1. Firebase Auth 로그인
+      final user = await authRepo.signInWithGoogle();
+
+      // 2. Firestore에 유저 문서 확인/생성
+      final existingUser = await userRepo.getUser(user.id);
+      if (existingUser == null) {
+        print('[Auth] Creating new user document in Firestore...');
+        await userRepo.createUser(user);
+        print('[Auth] User document created');
+      } else {
+        print('[Auth] User document already exists');
+      }
+
       return user;
     });
   }
@@ -41,7 +56,22 @@ class AuthNotifier extends Notifier<AsyncValue<User?>> {
   Future<void> signInWithApple() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final user = await ref.read(authRepositoryProvider).signInWithApple();
+      final authRepo = ref.read(authRepositoryProvider);
+      final userRepo = ref.read(userRepositoryProvider);
+
+      // 1. Firebase Auth 로그인
+      final user = await authRepo.signInWithApple();
+
+      // 2. Firestore에 유저 문서 확인/생성
+      final existingUser = await userRepo.getUser(user.id);
+      if (existingUser == null) {
+        print('[Auth] Creating new user document in Firestore...');
+        await userRepo.createUser(user);
+        print('[Auth] User document created');
+      } else {
+        print('[Auth] User document already exists');
+      }
+
       return user;
     });
   }

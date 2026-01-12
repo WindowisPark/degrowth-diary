@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/firebase/firebase_achievement_repository.dart';
 import '../data/firebase/firebase_auth_repository.dart';
 import '../data/firebase/firebase_monster_catalog_repository.dart';
 import '../data/firebase/firebase_record_repository.dart';
 import '../data/firebase/firebase_user_monster_repository.dart';
 import '../data/firebase/firebase_user_repository.dart';
+import '../domain/repositories/i_achievement_repository.dart';
 import '../domain/repositories/i_auth_repository.dart';
 import '../domain/repositories/i_monster_catalog_repository.dart';
 import '../domain/repositories/i_record_repository.dart';
@@ -24,7 +26,10 @@ final firestoreProvider = Provider<FirebaseFirestore>((ref) {
 
 /// Auth Repository
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {
-  return FirebaseAuthRepository(ref.watch(firebaseAuthProvider));
+  return FirebaseAuthRepository(
+    ref.watch(firebaseAuthProvider),
+    ref.watch(firestoreProvider),
+  );
 });
 
 /// Record Repository
@@ -51,4 +56,9 @@ final userMonsterRepositoryProvider = Provider<IUserMonsterRepository>((ref) {
 /// User Repository
 final userRepositoryProvider = Provider<IUserRepository>((ref) {
   return FirebaseUserRepository(ref.watch(firestoreProvider));
+});
+
+/// Achievement Repository
+final achievementRepositoryProvider = Provider<IAchievementRepository>((ref) {
+  return FirebaseAchievementRepository(ref.watch(firestoreProvider));
 });
