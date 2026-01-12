@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/category_data.dart';
+import '../../../../core/utils/image_loader.dart';
 import '../../../../domain/entities/monster.dart';
 
 /// 몬스터 획득 연출 다이얼로그 (가챠 스타일)
@@ -390,14 +391,12 @@ class _MonsterReveal extends StatelessWidget {
             ],
           ),
           child: Center(
-            child: monster.imageUrl.isNotEmpty
-                ? Image.network(
-                    monster.imageUrl,
-                    width: 100,
-                    height: 100,
-                    errorBuilder: (_, __, ___) => _defaultIcon(),
-                  )
-                : _defaultIcon(),
+            child: ImageLoader.loadMonsterImage(
+              monster.imageUrl,
+              width: 100,
+              height: 100,
+              fallback: _defaultIcon(),
+            ),
           ),
         ),
 

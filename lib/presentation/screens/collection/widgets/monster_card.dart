@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/category_data.dart';
+import '../../../../core/utils/image_loader.dart';
 import '../../../../domain/entities/monster.dart';
 import '../../../../domain/entities/user_monster.dart';
 
@@ -164,31 +165,12 @@ class _MonsterImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (monster.imageUrl.isNotEmpty) {
-      return Image.network(
-        monster.imageUrl,
-        width: 50,
-        height: 50,
-        fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) => _defaultIcon(),
-      );
-    }
-    return _defaultIcon();
-  }
-
-  Widget _defaultIcon() {
-    return Container(
+    return ImageLoader.loadMonsterImage(
+      monster.imageUrl,
       width: 50,
       height: 50,
-      decoration: BoxDecoration(
-        color: color.withAlpha(40),
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        Icons.pest_control,
-        color: color,
-        size: 28,
-      ),
+      fit: BoxFit.contain,
+      fallbackColor: color,
     );
   }
 }

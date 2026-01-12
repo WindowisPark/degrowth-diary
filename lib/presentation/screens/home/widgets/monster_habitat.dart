@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/image_loader.dart';
 import '../../../../domain/entities/monster.dart';
 import '../../../../domain/entities/user_monster.dart';
 import '../../../../providers/monster_catalog_provider.dart';
@@ -271,12 +272,12 @@ class _MonsterContentState extends State<_MonsterContent>
                         ],
                       ),
                       child: Center(
-                        child: monster?.imageUrl != null
-                            ? Image.network(
+                        child: monster != null
+                            ? ImageLoader.loadMonsterImage(
                                 monster!.imageUrl,
                                 width: 80,
                                 height: 80,
-                                errorBuilder: (_, __, ___) => _defaultMonsterIcon(),
+                                fallback: _defaultMonsterIcon(),
                               )
                             : _defaultMonsterIcon(),
                       ),

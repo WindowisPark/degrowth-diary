@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/category_data.dart';
 import '../../../core/constants/sample_monsters.dart';
+import '../../../core/utils/image_loader.dart';
 import '../../../domain/entities/monster.dart';
 import '../../../domain/entities/user_monster.dart';
 
@@ -220,22 +221,16 @@ class _MonsterAvatar extends StatelessWidget {
       ),
       child: Center(
         child: isOwned
-            ? (monster.imageUrl.isNotEmpty
-                ? Image.network(
-                    monster.imageUrl,
-                    width: size * 0.6,
-                    height: size * 0.6,
-                    errorBuilder: (_, __, ___) => Icon(
-                      Icons.pest_control,
-                      color: color,
-                      size: size * 0.4,
-                    ),
-                  )
-                : Icon(
-                    Icons.pest_control,
-                    color: color,
-                    size: size * 0.4,
-                  ))
+            ? ImageLoader.loadMonsterImage(
+                monster.imageUrl,
+                width: size * 0.6,
+                height: size * 0.6,
+                fallback: Icon(
+                  Icons.pest_control,
+                  color: color,
+                  size: size * 0.4,
+                ),
+              )
             : Icon(
                 Icons.lock,
                 color: AppColors.textHint,
