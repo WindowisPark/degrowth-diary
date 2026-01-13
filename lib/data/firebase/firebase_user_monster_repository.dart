@@ -65,8 +65,26 @@ class FirebaseUserMonsterRepository implements IUserMonsterRepository {
   @override
   Future<void> addExp(String monsterId, int exp) async {
     try {
+      // 현재 몬스터 정보 가져오기
+      final doc = await _collection.doc(monsterId).get();
+      if (!doc.exists) return;
+
+      final currentMonster = UserMonsterModel.fromJson(doc.data()!, doc.id).toEntity();
+      final newExp = currentMonster.exp + exp;
+
+      // 레벨업 계산
+      int newLevel = currentMonster.level;
+      int remainingExp = newExp;
+
+      while (remainingExp >= (newLevel * 100)) {
+        remainingExp -= (newLevel * 100);
+        newLevel++;
+      }
+
+      // 업데이트
       await _collection.doc(monsterId).update({
-        'exp': FieldValue.increment(exp),
+        'exp': remainingExp,
+        'level': newLevel,
       });
     } on FirebaseException catch (e) {
       throw ServerFailure(e.message ?? '서버 오류가 발생했습니다');

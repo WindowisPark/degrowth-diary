@@ -165,12 +165,23 @@ class _MonsterImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImageLoader.loadMonsterImage(
-      monster.imageUrl,
-      width: 50,
-      height: 50,
-      fit: BoxFit.contain,
-      fallbackColor: color,
+    return Container(
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        color: color.withAlpha(80),
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: ImageLoader.loadMonsterImageById(
+          monster.id,
+          imageUrl: monster.imageUrl.isNotEmpty ? monster.imageUrl : null,
+          width: 100,
+          height: 100,
+          fit: BoxFit.contain,
+          fallbackColor: color,
+        ),
+      ),
     );
   }
 }
@@ -180,8 +191,8 @@ class _LockedMonster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
+      width: 120,
+      height: 120,
       decoration: BoxDecoration(
         color: AppColors.border.withAlpha(50),
         shape: BoxShape.circle,
@@ -189,7 +200,7 @@ class _LockedMonster extends StatelessWidget {
       child: const Icon(
         Icons.lock,
         color: AppColors.textHint,
-        size: 24,
+        size: 48,
       ),
     );
   }

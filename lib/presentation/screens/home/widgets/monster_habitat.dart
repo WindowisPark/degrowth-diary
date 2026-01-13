@@ -273,8 +273,9 @@ class _MonsterContentState extends State<_MonsterContent>
                       ),
                       child: Center(
                         child: monster != null
-                            ? ImageLoader.loadMonsterImage(
-                                monster!.imageUrl,
+                            ? ImageLoader.loadMonsterImageById(
+                                monster!.id,
+                                imageUrl: monster!.imageUrl.isNotEmpty ? monster!.imageUrl : null,
                                 width: 80,
                                 height: 80,
                                 fallback: _defaultMonsterIcon(),

@@ -391,8 +391,9 @@ class _MonsterReveal extends StatelessWidget {
             ],
           ),
           child: Center(
-            child: ImageLoader.loadMonsterImage(
-              monster.imageUrl,
+            child: ImageLoader.loadMonsterImageById(
+              monster.id,
+              imageUrl: monster.imageUrl.isNotEmpty ? monster.imageUrl : null,
               width: 100,
               height: 100,
               fallback: _defaultIcon(),

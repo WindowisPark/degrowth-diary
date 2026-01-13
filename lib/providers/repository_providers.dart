@@ -8,6 +8,7 @@ import '../data/firebase/firebase_monster_catalog_repository.dart';
 import '../data/firebase/firebase_record_repository.dart';
 import '../data/firebase/firebase_user_monster_repository.dart';
 import '../data/firebase/firebase_user_repository.dart';
+import '../data/local/local_monster_catalog_repository.dart';
 import '../domain/repositories/i_achievement_repository.dart';
 import '../domain/repositories/i_auth_repository.dart';
 import '../domain/repositories/i_monster_catalog_repository.dart';
@@ -41,8 +42,11 @@ final recordRepositoryProvider = Provider<IRecordRepository>((ref) {
 });
 
 /// Monster Catalog Repository (글로벌 도감)
+/// MVP: Local SampleMonsters 사용
 final monsterCatalogRepositoryProvider = Provider<IMonsterCatalogRepository>((ref) {
-  return FirebaseMonsterCatalogRepository(ref.watch(firestoreProvider));
+  return LocalMonsterCatalogRepository();
+  // TODO: 나중에 Firebase로 마이그레이션
+  // return FirebaseMonsterCatalogRepository(ref.watch(firestoreProvider));
 });
 
 /// User Monster Repository (유저 소유)

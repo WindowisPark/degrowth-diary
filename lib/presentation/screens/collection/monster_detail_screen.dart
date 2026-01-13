@@ -31,7 +31,7 @@ class MonsterDetailScreen extends StatelessWidget {
         slivers: [
           // 앱바 + 몬스터 이미지
           SliverAppBar(
-            expandedHeight: 280,
+            expandedHeight: 340,
             pinned: true,
             backgroundColor: AppColors.surface,
             leading: IconButton(
@@ -67,7 +67,7 @@ class MonsterDetailScreen extends StatelessWidget {
                         monster: monster,
                         color: color,
                         isOwned: isOwned,
-                        size: 140,
+                        size: 200,
                       ),
                       const SizedBox(height: 16),
                       // 레어도
@@ -203,7 +203,7 @@ class _MonsterAvatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: isOwned ? color.withAlpha(30) : AppColors.border.withAlpha(30),
+        color: isOwned ? color.withAlpha(80) : AppColors.border.withAlpha(30),
         shape: BoxShape.circle,
         border: Border.all(
           color: isOwned ? color.withAlpha(80) : AppColors.border,
@@ -221,10 +221,11 @@ class _MonsterAvatar extends StatelessWidget {
       ),
       child: Center(
         child: isOwned
-            ? ImageLoader.loadMonsterImage(
-                monster.imageUrl,
-                width: size * 0.6,
-                height: size * 0.6,
+            ? ImageLoader.loadMonsterImageById(
+                monster.id,
+                imageUrl: monster.imageUrl.isNotEmpty ? monster.imageUrl : null,
+                width: size * 0.85,
+                height: size * 0.85,
                 fallback: Icon(
                   Icons.pest_control,
                   color: color,

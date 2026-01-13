@@ -9,6 +9,64 @@ import '../constants/app_colors.dart';
 class ImageLoader {
   ImageLoader._();
 
+  /// Monster ID를 기반으로 이미지 경로 자동 생성
+  ///
+  /// 파일명 규칙: {category}_{id}_{expression}.png
+  /// 예시: food_001 -> assets/images/monsters/food/food_001_idle.png
+  static String getMonsterImagePath(
+    String monsterId, {
+    MonsterExpression expression = MonsterExpression.idle,
+  }) {
+    // monsterId가 비어있으면 빈 문자열 반환
+    if (monsterId.isEmpty) return '';
+
+    // monsterId 파싱 (예: 'food_001' -> category='food', id='001')
+    final parts = monsterId.split('_');
+    if (parts.length < 2) return '';
+
+    final category = parts[0]; // food, sleep, exercise, money, productivity
+    final suffix = switch (expression) {
+      MonsterExpression.idle => 'idle',
+      MonsterExpression.happy => 'happy',
+      MonsterExpression.sleep => 'sleep',
+    };
+
+    return 'assets/images/monsters/$category/${monsterId}_$suffix.png';
+  }
+
+  /// 몬스터 이미지 로드 (Monster ID로 자동 경로 생성)
+  ///
+  /// [monsterId]: 몬스터 ID (예: 'food_001')
+  /// [expression]: 표정 (기본: idle)
+  /// [imageUrl]: 명시적 이미지 URL (옵션, 없으면 monsterId로 자동 생성)
+  static Widget loadMonsterImageById(
+    String monsterId, {
+    String? imageUrl,
+    MonsterExpression expression = MonsterExpression.idle,
+    double width = 50,
+    double height = 50,
+    BoxFit fit = BoxFit.contain,
+    Widget? fallback,
+    Color? fallbackColor,
+  }) {
+    // imageUrl이 명시되어 있고 비어있지 않으면 그것 사용
+    String finalUrl = imageUrl ?? '';
+
+    // imageUrl이 없으면 monsterId로 자동 생성
+    if (finalUrl.isEmpty) {
+      finalUrl = getMonsterImagePath(monsterId, expression: expression);
+    }
+
+    return loadMonsterImage(
+      finalUrl,
+      width: width,
+      height: height,
+      fit: fit,
+      fallback: fallback,
+      fallbackColor: fallbackColor,
+    );
+  }
+
   /// 몬스터 이미지 로드
   ///
   /// [imageUrl]: 이미지 경로 (assets/... 또는 https://...)

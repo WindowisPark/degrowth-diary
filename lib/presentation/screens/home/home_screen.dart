@@ -22,49 +22,62 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Column(
-          children: [
-            // 1. 미니멀 헤더
-            const _HomeHeader(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      // 1. 미니멀 헤더
+                      const _HomeHeader(),
 
-            // 2. 데일리 체크인 카드
-            const DailyCheckInCard(),
+                      // 2. 데일리 체크인 카드
+                      const DailyCheckInCard(),
 
-            // 3. 오늘의 특별 몬스터
-            const SpecialMonsterHintCard(),
+                      // 3. 오늘의 특별 몬스터
+                      const SpecialMonsterHintCard(),
 
-            // 4. 몬스터 서식지 (메인 영역)
-            const Expanded(
-              flex: 5,
-              child: MonsterHabitat(),
-            ),
+                      // 4. 몬스터 서식지 (메인 영역)
+                      const Expanded(
+                        flex: 5,
+                        child: MonsterHabitat(),
+                      ),
 
-            const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-            // 5. 오늘의 기록 섹션
-            SizedBox(
-              height: 140,
-              child: TodayRecordsSection(
-                onMoreTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const HistoryScreen()),
-                  );
-                },
-              ),
-            ),
+                      // 5. 오늘의 기록 섹션
+                      SizedBox(
+                        height: 140,
+                        child: TodayRecordsSection(
+                          onMoreTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => const HistoryScreen()),
+                            );
+                          },
+                        ),
+                      ),
 
-            // 4. 하단 CTA
-            _RecordButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const RecordFlowScreen(),
-                    fullscreenDialog: true,
+                      // 4. 하단 CTA
+                      _RecordButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const RecordFlowScreen(),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
